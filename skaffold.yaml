@@ -1,0 +1,30 @@
+apiVersion: skaffold/v2beta7
+kind: Config
+metadata:
+  name: kboot-reactive-mongo
+build:
+  local:
+  artifacts:
+    - image: registry.apps.c3smonkey.ch/dev/redis-demo
+      buildpacks:
+        builder: gcr.io/paketo-buildpacks/builder:base-platform-api-0.3
+        dependencies:
+          paths:
+            - build.gradle.kts
+            - src/main/resources
+            - build/classes
+      sync:
+        manual:
+          - src: "src/main/resources/**/*"
+            dest: /workspace/BOOT-INF/classes
+            strip: src/main/resources/
+          - src: "build/classes/**/*"
+            dest: /workspace/BOOT-INF/classes
+            strip: build/classes/
+  tagPolicy:
+    sha256: {}
+
+deploy:
+  kustomize:
+    paths:
+      - k8s/installs/dev

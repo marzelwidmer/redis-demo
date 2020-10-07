@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  template:
+    spec:
+      containers:
+        # TODO
+        - name: redis-demo
+          resources:
+            limits:
+              cpu: 512m
+              memory: 5120Mi
+            requests:
+              cpu: 50m
+              memory: 200Mi
+
+

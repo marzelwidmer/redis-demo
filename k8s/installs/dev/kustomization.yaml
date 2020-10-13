@@ -7,7 +7,7 @@ namespace: dev
 #nameSuffix: -v1
 
 resources:
-  - ../../base
+  - ../../base-openshift
 
 # Patch Deployment
 patchesStrategicMerge:

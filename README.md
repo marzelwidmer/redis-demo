@@ -156,7 +156,34 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 ## Install Redis
 ```
-helm install myredis bitnami/redis-cluster
+helm install redis bitnami/redis
+
+
+To get your password run:
+
+    export REDIS_PASSWORD=$(kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode)
+
+To connect to your Redis server:
+
+1. Run a Redis pod that you can use as a client:
+   kubectl run --namespace default redis-client --rm --tty -i --restart='Never' \
+    --env REDIS_PASSWORD=$REDIS_PASSWORD \
+   --image docker.io/bitnami/redis:6.0.8-debian-10-r0 -- bash
+
+2. Connect using the Redis CLI:
+   redis-cli -h redis-master -a $REDIS_PASSWORD
+   redis-cli -h redis-slave -a $REDIS_PASSWORD
+
+To connect to your database from outside the cluster execute the following commands:
+
+    kubectl port-forward --namespace default svc/redis-master 6379:6379 &
+    redis-cli -h 127.0.0.1 -p 6379 -a $REDIS_PASSWORD
+
+
+```
+### Install Redis Cluster
+```
+helm install redis bitnami/redis-cluster
 ```
 
 
@@ -170,7 +197,48 @@ docker push registry.apps.c3smonkey.ch/openshift/redis:5.0.5
 oc tag redis:5.0.5 redis:latest
 ```
 
+# Install Redis on Openshift
+```
+./openshift/installs/redis/deploy-redis.sh
+```
+
+# Remote Shell in Redis POD
+```bash
+oc rsh redis-1-j8d67
+```
+# Open Redis CLI
+```bash
+sh-4.2$ redis-cli
+```
+
+# Authenticate 
+```bash
+127.0.0.1:6379> auth <password>
+```
+
+# Retrieving All Existing Keys 
+The Keys are only temporaries when the rate limit has been recognized
+https://chartio.com/resources/tutorials/how-to-get-all-keys-in-redis/
+```bash
+127.0.0.1:6379> KEYS *
+1) "request_rate_limiter.{1}.timestamp"
+2) "request_rate_limiter.{1}.tokens"
+127.0.0.1:6379>
+```
 
 
 
 
+
+
+
+
+# Read ConfigMap - RBAC policy  
+```
+oc policy add-role-to-user view system:serviceaccount:dev:default
+```
+
+# Deploy to OpenShift
+```
+skaffold run -p openshift
+```

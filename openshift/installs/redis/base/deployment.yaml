@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: redis
+    spec:
+      containers:
+        - image: docker-registry.default.svc:5000/openshift/redis
+          name: redis
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+              name: 6379-tcp
+          imagePullPolicy: Always
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: redis

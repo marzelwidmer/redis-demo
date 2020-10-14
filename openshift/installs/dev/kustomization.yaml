@@ -7,18 +7,19 @@ namespace: dev
 #nameSuffix: -v1
 
 resources:
-  - ../../base-openshift
+  - ../../base
 
 # Patch Deployment
 patchesStrategicMerge:
   - patch-spring-profile.yaml
   - patch-limits.yaml
   - patch-liveness-readiness.yaml
+  - use-redis-secret.yaml
 
 # ConfigMap
 configMapGenerator:
   - files:
       - config-files/application.yaml
-    name: app-config
+    name: redis-demo-config
 
 

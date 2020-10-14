@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redis-demo
+  name: redis-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-demo
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: redis-demo
+    spec:
+      containers:
+        - image: redis-demo
+          name: redis-demo
+

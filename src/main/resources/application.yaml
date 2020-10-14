@@ -7,13 +7,15 @@ spring:
     name: redis-demo
 
   redis:
-    host: localhost
+#    host: localhost
+    host: redis-master.default.svc.cluster.local
     port: 6379
+    password: ${REDIS_PASSWORD}
 
   cache:
     cache-names: cache1, cache2
-#    redis:
-#      time-to-live: 30000
+    redis:
+      time-to-live: 30000
 
 ---
 spring:

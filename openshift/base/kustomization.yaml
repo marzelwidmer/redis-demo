@@ -24,7 +24,6 @@ resources:
 patchesStrategicMerge:
   - configmap.yaml
 
-
 # otherwise the name wil be namePrefix-app-nameSuffix
 patches:
   - patch: |-

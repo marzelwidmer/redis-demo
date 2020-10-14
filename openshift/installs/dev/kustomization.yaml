@@ -15,11 +15,10 @@ patchesStrategicMerge:
   - patch-limits.yaml
   - patch-liveness-readiness.yaml
   - use-redis-secret.yaml
+  - use_configmap.yaml
 
-# ConfigMap
+
 configMapGenerator:
   - files:
       - config-files/application.yaml
-    name: redis-demo-config
-
-
+    name: redis-demo

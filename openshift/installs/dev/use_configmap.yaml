@@ -1,20 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: redis-demo
 spec:
   template:
     spec:
       containers:
-        # TODO FIXME
         - name: redis-demo
           volumeMounts:
             - mountPath: /config
-              name: redis-demo-config
+              name: redis-demo
       volumes:
-        - name: redis-demo-config
+        - name: redis-demo
           configMap:
-            name: redis-demo-config
+            name: redis-demo
 
 
 

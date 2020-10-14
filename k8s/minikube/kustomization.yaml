@@ -12,11 +12,12 @@ resources:
 
 # ConfigMap
 patchesStrategicMerge:
+  - patch-spring-profile.yaml
   - use_configmap.yaml
   - use-redis-secret.yaml
 
 configMapGenerator:
   - files:
       - config-files/application.yaml
-    name: redis-demo-config
+    name: redis-demo
 

@@ -20,9 +20,6 @@ resources:
   - service.yaml
   - route
 
-# ConfigMap
-patchesStrategicMerge:
-  - configmap.yaml
 
 # otherwise the name wil be namePrefix-app-nameSuffix
 patches:

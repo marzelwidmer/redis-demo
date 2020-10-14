@@ -6,11 +6,11 @@ spring:
   application:
     name: redis-demo
 
-  redis:
+#  redis:
 #    host: localhost
-    host: redis-master.default.svc.cluster.local
-    port: 6379
-    password: ${REDIS_PASSWORD}
+#    host: redis-master.default.svc.cluster.local
+#    port: 6379
+#    password: ${REDIS_PASSWORD}
 
   cache:
     cache-names: cache1, cache2

@@ -60,3 +60,7 @@ tasks.withType<KotlinCompile> {
 		jvmTarget = "11"
 	}
 }
+
+//tasks.getByName<BootBuildImage>("bootBuildImage") {
+//   imageName = "${project.name}"
+//}

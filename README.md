@@ -29,7 +29,7 @@ docker images
 # Running the Redis instance
 We will start the Redis instance for our application with the command : 
 ```
-docker run -d --name redis-alpine --net twitter -p 6379:6379 redis:6.0.8-alpine
+
 ```
 
 # Install Redis CLI on OSX

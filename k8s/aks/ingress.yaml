@@ -1,0 +1,23 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: redis-service-ingress
+spec:
+  routes:
+    - match: PathPrefix(`/redis`)
+      kind: Rule
+      middlewares:
+        - name: test-stripprefix
+      services:
+        - name: redis-service
+          port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: test-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /redis

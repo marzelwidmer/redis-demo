@@ -1,18 +1,11 @@
-apiVersion: skaffold/v2beta8
+apiVersion: skaffold/v2beta18
 kind: Config
 metadata:
   name: redis-demo
 build:
+  local:
   artifacts:
-    - image: redis-demo
-      sync:
-        manual:
-          - src: src/main/resources/**/*
-            dest: /workspace/BOOT-INF/classes
-            strip: src/main/resources/
-          - src: build/classes/**/*
-            dest: /workspace/BOOT-INF/classes
-            strip: build/classes/
+    - image: myhelsana.azurecr.io/redis-demo
       buildpacks:
         builder: gcr.io/paketo-buildpacks/builder:base-platform-api-0.3
         dependencies:
@@ -20,34 +13,97 @@ build:
             - build.gradle.kts
             - src/main/resources
             - build/classes
+      sync:
+        manual:
+          - src: "src/main/resources/**/*"
+            dest: /workspace/BOOT-INF/classes
+            strip: src/main/resources/
+          - src: "build/classes/**/*"
+            dest: /workspace/BOOT-INF/classes
+            strip: build/classes/
+  tagPolicy:
+    sha256: {}
+
 deploy:
   kustomize:
     paths:
-      - k8s/minikube
-      -
-profiles:
-  - name: openshift
-    build:
-      artifacts:
-        - image: registry.apps.c3smonkey.ch/dev/redis-demo
-          buildpacks:
-            builder: gcr.io/paketo-buildpacks/builder:base-platform-api-0.3
-            dependencies:
-              paths:
-                - build.gradle.kts
-                - src/main/resources
-                - build/classes
-          sync:
-            manual:
-              - src: "src/main/resources/**/*"
-                dest: /workspace/BOOT-INF/classes
-                strip: src/main/resources/
-              - src: "build/classes/**/*"
-                dest: /workspace/BOOT-INF/classes
-                strip: build/classes/
-      tagPolicy:
-        sha256: { }
-    deploy:
-      kustomize:
-        paths:
-          - openshift/installs/dev
+      - k8s/aks
+
+#apiVersion: skaffold/v2beta18
+#kind: Config
+#metadata:
+#  name: redis-demo
+#build:
+#  artifacts:
+#  - image: redis-demo
+#    sync:
+#      manual:
+#      - src: src/main/resources/**/*
+#        dest: /workspace/BOOT-INF/classes
+#        strip: src/main/resources/
+#      - src: build/classes/**/*
+#        dest: /workspace/BOOT-INF/classes
+#        strip: build/classes/
+#    buildpacks:
+#      builder: gcr.io/paketo-buildpacks/builder:base-platform-api-0.3
+#      dependencies:
+#        paths:
+#        - build.gradle.kts
+#        - src/main/resources
+#        - build/classes
+#deploy:
+#  kustomize:
+#    paths:
+#    - k8s/minikube
+#
+#profiles:
+#- name: aks
+#  build:
+#    artifacts:
+#    - image: myhelsana.azurecr.io/redis-demo
+#      sync:
+#        manual:
+#        - src: src/main/resources/**/*
+#          dest: /workspace/BOOT-INF/classes
+#          strip: src/main/resources/
+#        - src: build/classes/**/*
+#          dest: /workspace/BOOT-INF/classes
+#          strip: build/classes/
+#      buildpacks:
+#        builder: gcr.io/paketo-buildpacks/builder:base-platform-api-0.3
+#        dependencies:
+#          paths:
+#          - build.gradle.kts
+#          - src/main/resources
+#          - build/classes
+#    tagPolicy:
+#      sha256: {}
+#  deploy:
+#    kustomize:
+#      paths:
+#      - k8s/aks
+#- name: openshift
+#  build:
+#    artifacts:
+#    - image: myhelsana.azurecr.io/redis-demo
+#      sync:
+#        manual:
+#        - src: src/main/resources/**/*
+#          dest: /workspace/BOOT-INF/classes
+#          strip: src/main/resources/
+#        - src: build/classes/**/*
+#          dest: /workspace/BOOT-INF/classes
+#          strip: build/classes/
+#      buildpacks:
+#        builder: gcr.io/paketo-buildpacks/builder:base-platform-api-0.3
+#        dependencies:
+#          paths:
+#          - build.gradle.kts
+#          - src/main/resources
+#          - build/classes
+#    tagPolicy:
+#      sha256: {}
+#  deploy:
+#    kustomize:
+#      paths:
+#      - openshift/installs/dev

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  template:
+    spec:
+      containers:
+        - name: redis-demo
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Djavax.net.ssl.trustStore=/mnt/truststore/myhelsana-truststore.jks
+              -Djavax.net.ssl.trustStoreType=JKS -Xms768m -Xmx768m -XX:MaxMetaspaceSize=256M
+              -Duser.timezone='Europe/Zurich'
+              "
+          volumeMounts:
+            - mountPath: /mnt/truststore
+              name: myhelsana-truststore
+              readOnly: true
+      volumes:
+        - name: myhelsana-truststore
+          secret:
+            defaultMode: 420
+            items:
+              - key: truststore.jks
+                path: myhelsana-truststore.jks
+            secretName: myhelsana-truststore
